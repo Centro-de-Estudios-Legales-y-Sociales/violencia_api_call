@@ -3,3 +3,4 @@
 Llamada a la API de uwazi para publicacion en la web de violenciapolicial.org.ar
 
 Requiere = jq, awk, curl
+Ejecutar = sh reduceh
