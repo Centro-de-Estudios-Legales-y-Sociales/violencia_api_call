@@ -1,0 +1,33 @@
+#!/bin/sh
+
+hechos="./h.json"
+hechos_tmp=${hechos}.tmp
+
+# Backup hechos
+backup()
+{
+	cp ${hechos} ${hechos}.bk
+}
+
+# Remove "lugar_del_hecho" ID
+removeid()
+{
+	awk '{gsub("lugar_del_hecho\"\:\\[\{\"label\"\:\"[[:digit:]]\+\ \-\ ","lugar_del_hecho\"\:\[\{\"label\"\:\""); print}' ${hechos} > ${hechos_tmp}
+mv ${hechos_tmp} ${hechos}
+}
+
+# Remove descripcion_del_hecho
+removedesc()
+{
+	cat ${hechos} | jq 'walk(if type == "object" then (del(.descripcion_del_hecho,.attachments,.documents,.fuentes,.espacio)) else . end)' > ${hechos_tmp} 
+mv ${hechos_tmp} ${hechos}
+}
+
+main()
+{
+	backup
+	removeid
+	removedesc
+}
+
+main "$@"
