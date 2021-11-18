@@ -23,11 +23,18 @@ removedesc()
 mv ${hechos_tmp} ${hechos}
 }
 
+# Delete institucion == Custodio Privado
+delcust()
+{
+        cat ${hechos} | jq 'walk(if type == "object" then (del(select(.label == "Custodio Privado"))) else . end)' > ${hechos_tmp}
+}
+
 main()
 {
 	backup
 	removeid
 	removedesc
+	delcust
 }
 
 main "$@"
